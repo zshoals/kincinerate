@@ -11,7 +11,7 @@
 			"program": "c:\\Users\\Zanarias\\Desktop\\Programming Projects\\Kincinerate\\Deployment\\New-Project.exe",
 			"cwd": "c:\\Users\\Zanarias\\Desktop\\Programming Projects\\Kincinerate\\Deployment",
 			"preLaunchTask": "Kinc: Build for Windows",
-			"externalConsole": true,
+			"console": "externalTerminal",
 			"logging": {
 				"moduleLoad": false,
 				"trace": true
