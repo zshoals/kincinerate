@@ -10,6 +10,8 @@
 typedef struct burn_keys_state burn_keys_state_t;
 
 void burn_keys_start(void);
+void burn_keys_enable_input(void);
+void burn_keys_disable_input(void);
 
 bool burn_keys_is_key_down(int keycode);
 bool burn_keys_is_key_up(int keycode);
