@@ -12,7 +12,7 @@ static double last_time;
 void render() {
 	double delta_time = kinc_time() - last_time;
 
-	burn_internal_keys_time_update(kinc_time()); //this isn't delta time idiot
+	burn_internal_keys_time_update(delta_time); //this isn't delta time idiot
 	//kinc_log(KINC_LOG_LEVEL_ERROR, "%f", kinc_time());
 	if (burn_keys_has_key_been_held_for(KINC_KEY_E, 2.)) kinc_internal_shutdown();
 
