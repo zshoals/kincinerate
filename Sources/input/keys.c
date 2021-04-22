@@ -1,6 +1,7 @@
 #include <kinc/pch.h>
 #include <kinc/system.h>
 #include <assert.h>
+#include <kinc/log.h>
 #include "keys.h"
 
 //TODO:
@@ -11,6 +12,9 @@
 typedef struct burn_keys_state {
 	double down_time[MAX_KEYS];
 	double up_time[MAX_KEYS];
+	double down_timestamp[MAX_KEYS];
+	double up_timestamp[MAX_KEYS];
+	//Timestamp? We can just calculate it manually by subtracting down time/up time from kinc_time though
 	bool is_down[MAX_KEYS];
 	int count_of_keys_down;
 	bool enable_input;
@@ -22,11 +26,14 @@ static bool initialized;
 void burn_keys_start(void) {
 	assert(!initialized);
 
+	double current_time = kinc_time();
+
 	for (int i = 0; i < MAX_KEYS; i++) {
-		double time = kinc_time();
-		state.down_time[i] = time;
-		state.up_time[i] = time;
+		state.down_time[i] = current_time;
+		state.up_time[i] = current_time;
 		state.is_down[i] = false;
+		state.down_timestamp[i] = current_time;
+		state.up_timestamp[i] = current_time;
 	}
 
 	state.count_of_keys_down = 0;
@@ -75,29 +82,31 @@ bool burn_keys_did_key_just_transition(int keycode, double threshold) {
 }
 
 bool burn_keys_has_key_been_held_for(int keycode, double threshold) {
-	double current_time = state.down_time[keycode];
+	double current_time = state.down_time[keycode] - state.down_timestamp[keycode];
+	//kinc_log(KINC_LOG_LEVEL_ERROR, "%f", state.down_timestamp[keycode] - state.down_timestamp[keycode]);
 	return (current_time > threshold);
 };
 
 bool burn_keys_has_key_been_released_for(int keycode, double threshold) {
-	double current_time = state.up_time[keycode];
+	double current_time = state.up_time[keycode] - state.up_timestamp[keycode];
 	return (current_time > threshold);
 };
 
 double burn_keys_key_down_duration(int keycode) {
-	return state.down_time[keycode];
+	return state.down_time[keycode] - state.down_timestamp[keycode];
 };
 
 double burn_keys_key_up_duration(int keycode) {
-	return state.up_time[keycode];
+	return state.up_time[keycode] - state.up_timestamp[keycode];
 };
 
+//TODO: Make sure that the value passed in here is the actual delta time and not kinc_time raw
 void burn_internal_keys_time_update(double delta) {
 	for (int i = 0; i < MAX_KEYS; i++) {
 		if (state.is_down[i])
-			state.down_time[i] += delta;
+			state.down_time[i] = delta;
 		else
-			state.up_time[i] += delta;
+			state.up_time[i] = delta;
 	}
 };
 
@@ -108,8 +117,11 @@ void burn_internal_keys_set_key_down(int keycode) {
 	if (!state.enable_input) 
 		return;
 
+	double current_time = kinc_time();
+	kinc_log(KINC_LOG_LEVEL_ERROR, "E Was pushed down");
 	state.is_down[keycode] = true;
-	state.up_time[keycode] = 0.;
+	state.up_time[keycode] = current_time;
+	state.down_timestamp[keycode] = current_time;
 	state.count_of_keys_down++; //There's no way you can set a key down twice in a row without setting it up, right?
 };
 
@@ -120,7 +132,9 @@ void burn_internal_keys_set_key_up(int keycode) {
 	if (!state.enable_input) 
 		return;
 
+	double current_time = kinc_time();
 	state.is_down[keycode] = false;
-	state.down_time[keycode] = 0.;
+	state.down_time[keycode] = current_time;
+	state.up_timestamp[keycode] = current_time;
 	state.count_of_keys_down--;
 };

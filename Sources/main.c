@@ -7,8 +7,16 @@
 
 #include "input/keys.h"
 
+static double last_time;
+
 void render() {
-	if (burn_keys_is_any_key_down()) kinc_internal_shutdown();
+	double delta_time = kinc_time() - last_time;
+
+	burn_internal_keys_time_update(kinc_time()); //this isn't delta time idiot
+	//kinc_log(KINC_LOG_LEVEL_ERROR, "%f", kinc_time());
+	if (burn_keys_has_key_been_held_for(KINC_KEY_E, 2.)) kinc_internal_shutdown();
+
+	last_time = kinc_time();
 }
 
 int kickstart(int argc, char** argv) {
@@ -19,6 +27,8 @@ int kickstart(int argc, char** argv) {
 	burn_keys_start();
 	kinc_keyboard_key_down_callback = &burn_internal_keys_set_key_down;
 	kinc_keyboard_key_up_callback = &burn_internal_keys_set_key_up;
+
+	last_time = kinc_time();
 
 	//Start everything once we've loaded what we need and set up appropriate callbacks.
 	kinc_start();

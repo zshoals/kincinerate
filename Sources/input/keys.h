@@ -24,6 +24,6 @@ bool burn_keys_has_key_been_released_for(int keycode, double threshold);
 double burn_keys_key_down_duration(int keycode);
 double burn_keys_key_up_duration(int keycode);
 
-void burn_internal_keys_time_update(void);
+void burn_internal_keys_time_update(double delta);
 void burn_internal_keys_set_key_down(int keycode);
 void burn_internal_keys_set_key_up(int keycode);
