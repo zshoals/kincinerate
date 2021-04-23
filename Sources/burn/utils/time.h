@@ -2,8 +2,6 @@
 
 #include <kinc/pch.h>
 
-typedef struct burn_time burn_time_t;
-
 /*
 	Initializes Kincinerate's time tools. Provide your own time mechanism and make sure it has been initialized.
 
@@ -46,6 +44,16 @@ double burn_time_dt_adjusted(void);
 	A timescale factor that is applied to the time delta.
 */
 void burn_time_set_timescale(double scale);
+
+/*
+	The current timescale.
+*/
+double burn_time_current_timescale(void);
+
+/*
+	The current arbitrary time multiplier.
+*/
+double burn_time_current_multiplier(void);
 
 /*
 	An arbitrary multiplier factor that is applied to the time delta.
