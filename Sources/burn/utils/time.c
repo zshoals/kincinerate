@@ -1,6 +1,7 @@
 //TODO: This is just really redundant now that timer implements all of these directly
 
 #include <kinc/pch.h>
+#include <kinc/system.h>
 #include "time.h"
 #include "timer.h"
 
@@ -17,6 +18,10 @@ double burn_time_now(void) {
 double burn_time_previous(void) {
 	return burn_timer_previous(&time);
 };
+
+double burn_time_immediate(void) {
+	return kinc_time();
+}
 
 double burn_time_dt_real(void) {
 	return burn_timer_dt_real(&time);
