@@ -9,14 +9,12 @@
 
 #include "burn/input/keys.h"
 #include "burn/debug/log.h"
-
-static double last_time;
+#include "burn/utils/time.h"
 
 void render() {
-	double delta_time = kinc_time() - last_time;
-	last_time = kinc_time(); //This needs positioned immediately after delta calc
+	burn_internal_time_update(kinc_time());
 
-	burn_internal_keys_time_update(delta_time);
+	burn_internal_keys_time_update(burn_time_dt_adjusted());
 	burn_log_info("\"YES\"%f %s %s %d", burn_keys_key_down_duration(KINC_KEY_E), "YUP", "HELLO", __LINE__);
 	if (burn_keys_has_key_been_held_for(KINC_KEY_E, 2.)) kinc_internal_shutdown();
 
@@ -38,10 +36,10 @@ int kickstart(int argc, char** argv) {
 	//This isn't the case if kinc_g4_swap_buffers is called
 	kinc_set_update_callback(&render);
 	burn_keys_start();
+	burn_time_start(kinc_time());
+
 	kinc_keyboard_key_down_callback = &burn_internal_keys_set_key_down;
 	kinc_keyboard_key_up_callback = &burn_internal_keys_set_key_up;
-
-	last_time = kinc_time();
 
 	//Start everything once we've loaded what we need and set up appropriate callbacks.
 	//We need to set up our logic before kinc_start, once we're in kinc = RIP I guess
