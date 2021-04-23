@@ -3,9 +3,40 @@
 #include <kinc/pch.h>
 #include <kinc/math/core.h>
 
-#define KINC_PI 3.141592654
-#define KINC_TAU 6.283185307
+#define BURN_MATH_PI 3.141592654
+#define BURN_MATH_TAU 6.283185307
+#define BURN_MATH_EPSILON 0.00000001
 
+//============================
+//Custom
+float burn_math_linedist(float x1, float y1, float x2, float y2);
+float burn_math_lerp(float a, float b, float ratio);
+/**
+ * Remaps a number from one range to another. Stolen from HaxeFlixel.
+ *
+ * @param 	value	The incoming value to be converted
+ * @param 	start1 	Lower bound of the value's current range
+ * @param 	stop1 	Upper bound of the value's current range
+ * @param 	start2  Lower bound of the value's target range
+ * @param 	stop2 	Upper bound of the value's target range
+ * @return The remapped value
+ */
+float burn_math_remap(float value, float start1, float stop1, float start2, float stop2);
+float burn_math_deg2rad(float degrees);
+float burn_math_rad2deg(float radians);
+bool burn_math_equalf(float a, float b);
+bool burn_math_equalf_custom(float a, float b, float epsilon);
+int burn_math_signof(float value);
+float burn_math_dotproduct(float x1, float y1, float x2, float y2);
+
+//TODO: I literally brainfarted on a function that should be in here
+//Try and remember what it was?
+
+//============================
+
+
+//============================
+//All the Kinc ported stuff
 float burn_math_sin(float value);
 float burn_math_cos(float value);
 float burn_math_tan(float x);
@@ -28,3 +59,4 @@ float burn_math_max(float a, float b);
 int burn_math_mini(int a, int b);
 int burn_math_maxi(int a, int b);
 float burn_math_clamp(float value, float minValue, float maxValue);
+//============================
