@@ -1,6 +1,8 @@
 {
 	"files.associations": {
+		"*.h": "c",
 		"system.h": "c",
-		"log.h": "c"
+		"log.h": "c",
+		"cmath": "c"
 	}
 }
