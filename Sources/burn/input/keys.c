@@ -9,6 +9,8 @@
 //We still need to support entering a character name, for instance
 //And doing that via checking the down keys is weird I think?
 
+//The answer is an event queue that gets processed by whatever 
+
 typedef struct burn_keys_state {
 	double down_time[MAX_KEYS];
 	double up_time[MAX_KEYS];
@@ -53,10 +55,7 @@ bool burn_keys_is_key_up(int keycode) {
 };
 
 bool burn_keys_is_any_key_down(void) {
-	if (state.count_of_keys_down != 0)
-		return true;
-	else
-		return false;
+	return (state.count_of_keys_down != 0);
 };
 
 bool burn_keys_was_key_just_pressed(int keycode, double threshold) {
@@ -76,7 +75,6 @@ bool burn_keys_did_key_just_transition(int keycode, double threshold) {
 
 bool burn_keys_has_key_been_held_for(int keycode, double threshold) {
 	double current_time = state.down_time[keycode];
-	kinc_log(KINC_LOG_LEVEL_ERROR, "%f", state.down_time[keycode]);
 	return (current_time > threshold);
 };
 
@@ -93,7 +91,6 @@ double burn_keys_key_up_duration(int keycode) {
 	return state.up_time[keycode];
 };
 
-//TODO: Make sure that the value passed in here is the actual delta time and not kinc_time raw
 void burn_internal_keys_time_update(double delta) {
 	for (int i = 0; i < MAX_KEYS; i++) {
 		if (state.is_down[i])
