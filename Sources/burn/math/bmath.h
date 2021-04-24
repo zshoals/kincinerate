@@ -29,12 +29,6 @@ bool burn_math_equalf_custom(float a, float b, float epsilon);
 int burn_math_signof(float value);
 float burn_math_dotproduct(float x1, float y1, float x2, float y2);
 
-//TODO: I literally brainfarted on a function that should be in here
-//Try and remember what it was?
-
-//============================
-
-
 //============================
 //All the Kinc ported stuff
 float burn_math_sin(float value);

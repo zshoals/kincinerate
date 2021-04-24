@@ -1,7 +1,7 @@
 #include <kinc/pch.h>
 #include <kinc/math/core.h>
 
-#include "math.h"
+#include "bmath.h"
 
 float burn_math_linedist(float x1, float y1, float x2, float y2) {
 	float dx = x2 - x1;
@@ -45,7 +45,7 @@ int burn_math_signof(float value) {
 //============================
 //Kinc Ported Stuff Below This Point
 float burn_math_tan(float x) {
-	return kinc_tanf(x);
+	return kinc_tan(x);
 };
 
 float burn_math_cot(float x) {

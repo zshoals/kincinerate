@@ -3,6 +3,9 @@
 		"*.h": "c",
 		"system.h": "c",
 		"log.h": "c",
-		"cmath": "c"
+		"cmath": "c",
+		"algorithm": "c",
+		"chrono": "c",
+		"limits": "c"
 	}
 }
