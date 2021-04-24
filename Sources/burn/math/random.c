@@ -8,7 +8,7 @@ void burn_math_random_init(burn_math_random_state_t *rng, uint32_t a, uint32_t b
 	rng->a_seed = a;
 	rng->b_seed = b;
 	rng->c_seed = c;
-	rng->counter = 1; //Can any of this stuff overflow and kill us or what?
+	rng->counter = 1;
 };
 
 int burn_math_random_get(burn_math_random_state_t *rng) {
