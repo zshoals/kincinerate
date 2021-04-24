@@ -9,7 +9,7 @@
 
 //============================
 //Custom
-float burn_math_linedist(float x1, float y1, float x2, float y2);
+float burn_math_line_dist(float x1, float y1, float x2, float y2);
 float burn_math_lerp(float a, float b, float ratio);
 /**
  * Remaps a number from one range to another. Stolen from HaxeFlixel.

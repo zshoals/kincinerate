@@ -3,7 +3,7 @@
 
 #include "bmath.h"
 
-float burn_math_linedist(float x1, float y1, float x2, float y2) {
+float burn_math_line_dist(float x1, float y1, float x2, float y2) {
 	float dx = x2 - x1;
 	float dy = y2 - y1;
 	return burn_math_sqrt(burn_math_pow(dx, 2) + burn_math_pow(dy, 2));
