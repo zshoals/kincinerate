@@ -17,8 +17,8 @@ float burn_math_random_get_float(burn_math_random_state_t *rng);
 float burn_math_random_get_float_range(burn_math_random_state_t *rng, float min, float max);
 
 void *burn_math_random_bulk(burn_math_random_state_t *rng, int *data, size_t size);
-int *burn_math_random_bulk_range(burn_math_random_state_t *rng, int *data, size_t size, int min, int max);
-float *burn_math_random_bulk_float(burn_math_random_state_t *rng, float *data, size_t size);
-float *burn_math_random_bulk_float_range(burn_math_random_state_t *rng, float *data, size_t size, float min, float max);
+void *burn_math_random_bulk_range(burn_math_random_state_t *rng, int *data, size_t size, int min, int max);
+void *burn_math_random_bulk_float(burn_math_random_state_t *rng, float *data, size_t size);
+void *burn_math_random_bulk_float_range(burn_math_random_state_t *rng, float *data, size_t size, float min, float max);
 
 
