@@ -1,7 +1,7 @@
 #include <kinc/pch.h>
 #include <kinc/system.h>
 #include <assert.h>
-#include <kinc/log.h>
+#include "../debug/log.h"
 #include "keys.h"
 
 //TODO:
@@ -23,6 +23,7 @@ static burn_keys_state_t state;
 static bool initialized;
 
 void burn_keys_start(void) {
+	burn_log_info("Kincinerate keyboard state initialized at %f seconds", kinc_time());
 	assert(!initialized);
 
 	for (int i = 0; i < MAX_KEYS; i++) {
