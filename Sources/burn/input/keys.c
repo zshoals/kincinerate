@@ -4,6 +4,8 @@
 #include "../debug/log.h"
 #include "keys.h"
 
+#define BURN_LOG_MODULE_NAME "Keys"
+
 //TODO:
 //Figure out how to handle standard typing via events
 //We still need to support entering a character name, for instance
@@ -101,6 +103,9 @@ void burn_internal_keys_time_update(double delta) {
 	}
 };
 
+//TODO: Alt tabbing while holding a key down holds the key down forever
+//We need to reset all keys if that happens
+//NO FREE LUNCH
 void burn_internal_keys_set_key_down(int keycode) {
 	assert(keycode < MAX_KEYS);
 	assert(initialized);
@@ -124,3 +129,12 @@ void burn_internal_keys_set_key_up(int keycode) {
 	state.down_time[keycode] = 0.;
 	state.count_of_keys_down--;
 };
+
+void burn_internal_keys_set_all_up(void) {
+	assert(initialized);
+	burn_log_info("Window focus lost; all keys set up");
+
+	for (int i = 0; i < MAX_KEYS; ++i) {
+		burn_internal_keys_set_key_up(i);
+	}
+}

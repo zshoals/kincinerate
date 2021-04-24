@@ -27,3 +27,4 @@ double burn_keys_key_up_duration(int keycode);
 void burn_internal_keys_time_update(double delta);
 void burn_internal_keys_set_key_down(int keycode);
 void burn_internal_keys_set_key_up(int keycode);
+void burn_internal_keys_set_all_up(void);

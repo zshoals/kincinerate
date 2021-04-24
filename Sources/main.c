@@ -16,11 +16,13 @@
 static burn_math_random_state_t rng;
 static int storage[256];
 
+#define BURN_LOG_MODULE_NAME "Main"
+
 void render() {
 	burn_internal_time_update(kinc_time());
 
 	burn_internal_keys_time_update(burn_time_dt_adjusted());
-	//burn_log_info("\"YES\"%f %s %s %d", burn_keys_key_down_duration(KINC_KEY_E), "YUP", "HELLO", __LINE__);
+	burn_log_info("\"YES\"%f %s %s %d", burn_keys_key_down_duration(KINC_KEY_E), "YUP", "HELLO", __LINE__);
 	
 	if (burn_keys_has_key_been_held_for(KINC_KEY_E, 2.)) kinc_internal_shutdown();
 
@@ -48,6 +50,7 @@ int kickstart(int argc, char** argv) {
 
 	kinc_keyboard_key_down_callback = &burn_internal_keys_set_key_down;
 	kinc_keyboard_key_up_callback = &burn_internal_keys_set_key_up;
+	kinc_set_background_callback(&burn_internal_keys_set_all_up);
 
 
 	//Start everything once we've loaded what we need and set up appropriate callbacks.
