@@ -44,10 +44,14 @@ void burn_keys_enable_input(void) {
 	state.enable_input = true;
 };
 
-//TODO: Consider clearing all active inputs too?
 void burn_keys_disable_input(void) {
 	state.enable_input = false;
 };
+
+void burn_keys_disable_input_and_set_keys_up(void) {
+	burn_keys_disable_input();
+	burn_internal_keys_set_all_up();
+}
 
 bool burn_keys_is_key_down(int keycode) {
 	return state.is_down[keycode];
@@ -103,9 +107,6 @@ void burn_internal_keys_time_update(double delta) {
 	}
 };
 
-//TODO: Alt tabbing while holding a key down holds the key down forever
-//We need to reset all keys if that happens
-//NO FREE LUNCH
 void burn_internal_keys_set_key_down(int keycode) {
 	assert(keycode < MAX_KEYS);
 	assert(initialized);
@@ -130,6 +131,11 @@ void burn_internal_keys_set_key_up(int keycode) {
 	state.count_of_keys_down--;
 };
 
+/*
+	Necessary due to the fact that input events can be skipped if the program is not in focus.
+
+	Best used with some sort of focus lost callback, or as part of disabling input.
+*/
 void burn_internal_keys_set_all_up(void) {
 	assert(initialized);
 	burn_log_info("Window focus lost; all keys set up"); //This kind of shouldn't know that window focus was lost?
