@@ -132,7 +132,7 @@ void burn_internal_keys_set_key_up(int keycode) {
 
 void burn_internal_keys_set_all_up(void) {
 	assert(initialized);
-	burn_log_info("Window focus lost; all keys set up");
+	burn_log_info("Window focus lost; all keys set up"); //This kind of shouldn't know that window focus was lost?
 
 	for (int i = 0; i < MAX_KEYS; ++i) {
 		burn_internal_keys_set_key_up(i);
