@@ -6,7 +6,7 @@
 
 #define BURN_LOG_MODULE_NAME "Keys"
 
-//TODO:
+//!TODO:
 //Figure out how to handle standard typing via events
 //We still need to support entering a character name, for instance
 //And doing that via checking the down keys is weird I think?
@@ -78,7 +78,7 @@ bool burn_keys_was_key_just_released(int keycode, double threshold) {
 	return (current_time <= threshold);
 };
 
-//TODO: Evaluate if this actually works as I expect, the threshold timing might result in bad behavior?
+//!TODO: Evaluate if this actually works as I expect, the threshold timing might result in bad behavior?
 bool burn_keys_did_key_just_transition(int keycode, double threshold) {
 	return (burn_keys_was_key_just_pressed(keycode, threshold) || burn_keys_was_key_just_released(keycode, threshold));
 }

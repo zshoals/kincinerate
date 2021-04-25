@@ -1,5 +1,3 @@
-//TODO: This is just really redundant now that timer implements all of these directly
-
 #include <kinc/pch.h>
 #include <kinc/system.h>
 #include "time.h"

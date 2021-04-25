@@ -30,6 +30,7 @@ void burn_internal_keys_set_key_down(int keycode);
 void burn_internal_keys_set_key_up(int keycode);
 void burn_internal_keys_set_all_up(void);
 
+//Kinc keys renamed for my brain
 #define BURN_KEY_UNKNOWN 0
 #define BURN_KEY_BACK 1 // Android
 #define BURN_KEY_CANCEL 3
