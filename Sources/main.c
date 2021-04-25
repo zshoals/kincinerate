@@ -4,7 +4,6 @@
 #include "burn/engine.h"
 #include "burn/input/keys.h"
 
-
 #define BURN_LOG_MODULE_NAME "Main"
 
 void update_function(double delta_time) {

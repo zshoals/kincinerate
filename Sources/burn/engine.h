@@ -3,8 +3,6 @@
 #include <kinc/system.h>
 #include <kinc/window.h>
 #include <stdbool.h>
-kinc_framebuffer_options_t yeha;
-kinc_window_options_t wut;
 
 typedef enum {
 	BURN_WINDOW_MODE_WINDOWED = KINC_WINDOW_MODE_WINDOW,
