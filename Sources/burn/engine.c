@@ -17,8 +17,8 @@
 
 #define BURN_LOG_MODULE_NAME "Engine"
 
-static burn_engine_window_options_t static_window_options;
-static burn_engine_startup_options_t static_startup_options;
+static burn_engine_window_options_t window_state;
+static burn_engine_startup_options_t engine_state;
 
 void render() {
 
@@ -30,8 +30,8 @@ static void burn_private_engine_gameloop(void) {
 		burn_internal_time_update(kinc_time());
 		burn_internal_keys_time_update(burn_time_dt_adjusted());
 	}
-	static_startup_options.update_callback(static_startup_options.logic_fixed_update_rate);
-	static_startup_options.render_callback(0.);
+	engine_state.update_callback(engine_state.logic_fixed_update_rate);
+	engine_state.render_callback(0.);
 	//burn_private_engine_trigger_render
 	
 	//Interspersed with other random engine stuff?
@@ -57,8 +57,8 @@ void burn_engine_ignition(burn_engine_window_options_t *window_options, burn_eng
 	kinc_init("Yes", 1024, 768, NULL, NULL);
 
 	{
-		memcpy(&static_window_options, window_options, sizeof(*window_options));
-		memcpy(&static_startup_options, startup_options, sizeof(*startup_options));
+		memcpy(&window_state, window_options, sizeof(*window_options));
+		memcpy(&engine_state, startup_options, sizeof(*startup_options));
 		kinc_set_update_callback(&burn_private_engine_gameloop);
 		burn_private_engine_initialize_keyboard();
 		burn_private_engine_initialize_time();
