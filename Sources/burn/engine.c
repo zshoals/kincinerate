@@ -7,7 +7,6 @@
 #include <kinc/window.h>
 #include <kinc/graphics4/graphics.h>
 #include <kinc/math/matrix.h>
-#include <memory.h>
 
 #include "engine.h"
 #include "input/keys.h"
@@ -28,9 +27,6 @@ static void burn_private_engine_gameloop(void) {
 	}
 	engine_state.update_callback(engine_state.logic_fixed_update_rate);
 	engine_state.render_callback(0.0);
-	//burn_private_engine_trigger_render
-	
-	//Interspersed with other random engine stuff?
 };
 
 static void burn_private_engine_initialize_keyboard(void) {
@@ -91,8 +87,8 @@ void burn_engine_ignition(burn_engine_window_options_t *window_options, burn_eng
 	kinc_init(wo.title, wo.width, wo.height, &wo, &fbo);
 
 	{
-		memcpy(&window_state, window_options, sizeof(*window_options));
-		memcpy(&engine_state, startup_options, sizeof(*startup_options));
+		window_state = *window_options;
+		engine_state = *startup_options;
 		kinc_set_update_callback(&burn_private_engine_gameloop);
 		burn_private_engine_initialize_keyboard();
 		burn_private_engine_initialize_time();
@@ -108,7 +104,7 @@ void burn_engine_window_options_init(
 	int position_x, int position_y, int width, int height,
 	burn_window_mode mode, bool borderless_window, bool vertical_sync,
 	bool resizable, bool minimizable, bool maximizable, bool always_on_top) {
-		
+
 		options->title = title;
 		options->position_x = position_x;
 		options->position_y = position_y;
