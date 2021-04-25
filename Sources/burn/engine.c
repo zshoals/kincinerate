@@ -34,17 +34,18 @@ void render() {
 	kinc_g4_swap_buffers(); //While vsynced this stalls this loop since swap buffers synchronizes the frame to the monitor. Keep that in mind.
 }
 
+static void burn_private_engine_gameloop(void /*update cb, render cb*/) {
+	//burn_private_engine_trigger_update
+	//burn_private_engine_trigger_render
+	
+	//Interspersed with other random engine stuff?
+};
+
 void burn_engine_ignition() {
 	burn_log_info("Kincinerate initializing...");
-	kinc_framebuffer_options_t fb_options;
 
-	fb_options.vertical_sync = true;
-
-	//This should be loaded from some sort of config file
 	kinc_init("Yes", 1024, 768, NULL, NULL);
 
-	//The update callback seems to just run as fast as possible? Unsure what this is linked to, exactly.
-	//This isn't the case if kinc_g4_swap_buffers is called
 	kinc_set_update_callback(&render);
 	burn_keys_start();
 	burn_time_start(kinc_time());
@@ -55,8 +56,5 @@ void burn_engine_ignition() {
 	kinc_keyboard_key_up_callback = &burn_internal_keys_set_key_up;
 	kinc_set_background_callback(&burn_internal_keys_set_all_up);
 
-	//Start everything once we've loaded what we need and set up appropriate callbacks.
-	//We need to set up our logic before kinc_start, once we're in kinc = RIP I guess
 	kinc_start();
-
 }

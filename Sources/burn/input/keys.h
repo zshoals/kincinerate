@@ -1,6 +1,5 @@
 #pragma once
 
-#include <kinc/pch.h>
 #include <kinc/input/keyboard.h>
 #include <stdbool.h>
 

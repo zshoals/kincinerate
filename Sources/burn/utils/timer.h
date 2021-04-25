@@ -1,7 +1,5 @@
 #pragma once
 
-#include <kinc/pch.h>
-
 typedef struct burn_timer {
 	double now;
 	double previous;

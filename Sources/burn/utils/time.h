@@ -1,7 +1,5 @@
 #pragma once
 
-#include <kinc/pch.h>
-
 /*
 	Initializes Kincinerate's time tools. Provide your own time mechanism and make sure it has been initialized.
 
