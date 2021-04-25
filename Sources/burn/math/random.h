@@ -1,6 +1,5 @@
 #pragma once
 
-#include <kinc/pch.h>
 #include <stdint.h>
 
 typedef struct burn_math_random_state {

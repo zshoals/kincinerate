@@ -1,6 +1,5 @@
 #pragma once
 
-#include <kinc/pch.h>
 #include <kinc/math/core.h>
 
 #define BURN_MATH_PI 3.141592654
