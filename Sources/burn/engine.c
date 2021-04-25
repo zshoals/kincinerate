@@ -20,10 +20,6 @@
 static burn_engine_window_options_t window_state;
 static burn_engine_startup_options_t engine_state;
 
-void render() {
-
-}
-
 static void burn_private_engine_gameloop(void) {
 	//Internal Kincinerate updates
 	{
