@@ -6,7 +6,6 @@
 
 #define MAX_KEYS 256
 
-//Each array address is the related keycode.
 typedef struct burn_keys_state burn_keys_state_t;
 
 void burn_keys_start(void);

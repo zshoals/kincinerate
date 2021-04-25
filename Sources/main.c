@@ -22,9 +22,9 @@ void render() {
 	burn_internal_time_update(kinc_time());
 
 	burn_internal_keys_time_update(burn_time_dt_adjusted());
-	burn_log_info("\"YES\"%f %s %s %d", burn_keys_key_down_duration(KINC_KEY_E), "YUP", "HELLO", __LINE__);
+	burn_log_info("\"YES\"%f %s %s %d", burn_keys_key_down_duration(BURN_KEY_E, 2.), "YUP", "HELLO", __LINE__);
 	
-	if (burn_keys_has_key_been_held_for(KINC_KEY_E, 2.)) kinc_internal_shutdown();
+	if (burn_keys_has_key_been_held_for(BURN_KEY_E, 2.)) kinc_internal_shutdown();
 
 	kinc_g4_begin(0);
 	kinc_g4_clear(KINC_G4_CLEAR_COLOR, 0, 0.0f, 0);

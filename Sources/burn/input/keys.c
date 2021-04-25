@@ -13,6 +13,7 @@
 
 //The answer is an event queue that gets processed by whatever 
 
+//Each array address is the related keycode.
 typedef struct burn_keys_state {
 	double down_time[MAX_KEYS];
 	double up_time[MAX_KEYS];
@@ -61,6 +62,8 @@ bool burn_keys_is_key_up(int keycode) {
 	return !state.is_down[keycode];
 };
 
+//!NOTE: Worst case scenario, do a linear scan over the array to check if any key is down.
+//Only necessary if the "keys down counter" is not viable in practice.
 bool burn_keys_is_any_key_down(void) {
 	return (state.count_of_keys_down != 0);
 };
