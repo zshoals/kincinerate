@@ -1,6 +1,9 @@
 #include <kinc/pch.h>
+#include <kinc/graphics4/graphics.h>
 #include "burn/debug/log.h"
 #include "burn/engine.h"
+#include "burn/input/keys.h"
+
 
 #define BURN_LOG_MODULE_NAME "Main"
 
@@ -9,7 +12,12 @@ void update_function(double delta_time) {
 }
 
 void render_function(double extrapolation_alpha) {
+	if (burn_keys_has_key_been_held_for(BURN_KEY_E, 2.)) kinc_internal_shutdown();
 
+	kinc_g4_begin(0);
+	kinc_g4_clear(KINC_G4_CLEAR_COLOR, 0, 0.0f, 0);
+	kinc_g4_end(0);
+	kinc_g4_swap_buffers(); //While vsynced this stalls this loop since swap buffers synchronizes the frame to the monitor. Keep that in mind.
 }
 
 int kickstart(int argc, char** argv) {

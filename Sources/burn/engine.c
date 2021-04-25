@@ -21,23 +21,17 @@ static burn_engine_window_options_t static_window_options;
 static burn_engine_startup_options_t static_startup_options;
 
 void render() {
-	//PREFER KINC_TICKS over kinc_time for the actual game loop math
 
-	burn_internal_time_update(kinc_time());
-	
-	burn_internal_keys_time_update(burn_time_dt_adjusted());
-	//burn_log_info("\"YES\"%f %s %s %d", burn_keys_key_down_duration(BURN_KEY_E, 2.), "YUP", "HELLO", __LINE__);
-	
-	if (burn_keys_has_key_been_held_for(BURN_KEY_E, 2.)) kinc_internal_shutdown();
-
-	kinc_g4_begin(0);
-	kinc_g4_clear(KINC_G4_CLEAR_COLOR, 0, 0.0f, 0);
-	kinc_g4_end(0);
-	kinc_g4_swap_buffers(); //While vsynced this stalls this loop since swap buffers synchronizes the frame to the monitor. Keep that in mind.
 }
 
 static void burn_private_engine_gameloop(void) {
-	//burn_private_engine_trigger_update
+	//Internal Kincinerate updates
+	{
+		burn_internal_time_update(kinc_time());
+		burn_internal_keys_time_update(burn_time_dt_adjusted());
+	}
+	static_startup_options.update_callback(static_startup_options.logic_fixed_update_rate);
+	static_startup_options.render_callback(0.);
 	//burn_private_engine_trigger_render
 	
 	//Interspersed with other random engine stuff?
