@@ -7,6 +7,7 @@
 #include <kinc/window.h>
 #include <kinc/graphics4/graphics.h>
 #include <kinc/math/matrix.h>
+#include <memory.h>
 
 #include "engine.h"
 #include "input/keys.h"
@@ -16,7 +17,8 @@
 
 #define BURN_LOG_MODULE_NAME "Engine"
 
-static burn_math_random_state_t rng;
+static burn_engine_window_options_t static_window_options;
+static burn_engine_startup_options_t static_startup_options;
 
 void render() {
 	//PREFER KINC_TICKS over kinc_time for the actual game loop math
@@ -34,27 +36,40 @@ void render() {
 	kinc_g4_swap_buffers(); //While vsynced this stalls this loop since swap buffers synchronizes the frame to the monitor. Keep that in mind.
 }
 
-static void burn_private_engine_gameloop(void /*update cb, render cb*/) {
+static void burn_private_engine_gameloop(void) {
 	//burn_private_engine_trigger_update
 	//burn_private_engine_trigger_render
 	
 	//Interspersed with other random engine stuff?
 };
 
+static void burn_private_engine_initialize_keyboard(void) {
+	burn_keys_start();
+	kinc_keyboard_key_down_callback = &burn_internal_keys_set_key_down;
+	kinc_keyboard_key_up_callback = &burn_internal_keys_set_key_up;
+}
+
+static void burn_private_engine_initialize_time(void) {
+	burn_time_start(kinc_time());
+}
+
+static void burn_private_engine_initialize_background_callbacks(void) {
+	kinc_set_background_callback(&burn_internal_keys_set_all_up); //allow other people to hook into this?
+}
+
 void burn_engine_ignition(burn_engine_window_options_t *window_options, burn_engine_startup_options_t *startup_options) {
 	burn_log_info("Kincinerate initializing...");
 
 	kinc_init("Yes", 1024, 768, NULL, NULL);
 
-	kinc_set_update_callback(&render);
-	burn_keys_start();
-	burn_time_start(kinc_time());
-
-	burn_math_random_init(&rng, 57475, 5886, 1000);
-
-	kinc_keyboard_key_down_callback = &burn_internal_keys_set_key_down;
-	kinc_keyboard_key_up_callback = &burn_internal_keys_set_key_up;
-	kinc_set_background_callback(&burn_internal_keys_set_all_up);
+	{
+		memcpy(&static_window_options, window_options, sizeof(*window_options));
+		memcpy(&static_startup_options, startup_options, sizeof(*startup_options));
+		kinc_set_update_callback(&burn_private_engine_gameloop);
+		burn_private_engine_initialize_keyboard();
+		burn_private_engine_initialize_time();
+		burn_private_engine_initialize_background_callbacks();
+	}
 
 	kinc_start();
 };
@@ -88,3 +103,4 @@ void (*render_callback)(double extrapolation_alpha)) {
 	options->update_callback = update_callback;
 	options->render_callback = render_callback;
 }
+
