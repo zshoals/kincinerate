@@ -128,7 +128,10 @@ void burn_internal_keys_set_key_up(int keycode) {
 
 	state.is_down[keycode] = false;
 	state.down_time[keycode] = 0.;
-	state.count_of_keys_down--;
+	
+	//Fix for degenerate case of sending a key up event after resetting all keys to up.
+	if (state.count_of_keys_down > 0)
+		state.count_of_keys_down--;
 };
 
 /*
