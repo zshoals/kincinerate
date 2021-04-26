@@ -12,21 +12,38 @@
 #include "input/keys.h"
 #include "debug/log.h"
 #include "utils/time.h"
+#include "utils/timer.h"
 #include "math/random.h"
 
 #define BURN_LOG_MODULE_NAME "Engine"
 
 static burn_engine_window_options_t window_state;
 static burn_engine_startup_options_t engine_state;
+static burn_timer_t logic_timer;
+static burn_timer_t render_timer;
 
 static void burn_private_engine_gameloop(void) {
 	//Internal Kincinerate updates
 	{
 		burn_internal_time_update(kinc_time());
-		burn_internal_keys_time_update(burn_time_dt_adjusted());
+		//!TODO: This isn't quite right. This should be the fixed DT which is adjusted? But it's just the time taken for logic + rendering
+		//!TODO: We still need it for the fixed update accumulator, however.
+		burn_internal_keys_time_update(burn_time_dt_adjusted()); 
 	}
-	engine_state.update_callback(engine_state.logic_fixed_update_rate);
-	engine_state.render_callback(0.0);
+
+	//Fixed Update 
+	{
+		burn_timer_update(&logic_timer, kinc_time());
+		engine_state.update_callback(engine_state.logic_fixed_update_rate);
+		burn_timer_update(&logic_timer, kinc_time());
+	}
+
+	//Render
+	{
+		burn_timer_update(&render_timer, kinc_time());
+		engine_state.render_callback(0.0);
+		burn_timer_update(&render_timer, kinc_time());
+	}
 };
 
 static void burn_private_engine_initialize_keyboard(void) {
@@ -37,6 +54,8 @@ static void burn_private_engine_initialize_keyboard(void) {
 
 static void burn_private_engine_initialize_time(void) {
 	burn_time_start(kinc_time());
+	burn_timer_init(&logic_timer);
+	burn_timer_init(&render_timer);
 }
 
 static void burn_private_engine_initialize_background_callbacks(void) {

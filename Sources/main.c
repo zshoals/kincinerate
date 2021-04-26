@@ -6,11 +6,11 @@
 
 #define BURN_LOG_MODULE_NAME "Main"
 
-void update_function(double delta_time) {
-
+void update(double delta_time) {
+	
 }
 
-void render_function(double extrapolation_alpha) {
+void render(double extrapolation_alpha) {
 	if (burn_keys_has_key_been_held_for(BURN_KEY_E, 2.)) kinc_internal_shutdown();
 
 	kinc_g4_begin(0);
@@ -32,8 +32,8 @@ int kickstart(int argc, char** argv) {
 
 	burn_engine_startup_options_init(&startup_options,
 		(1.0 / 60.0),
-		&update_function,
-		&render_function
+		&update,
+		&render
 	);
 
 	burn_engine_ignition(&window_options, &startup_options);
