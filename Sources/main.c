@@ -16,7 +16,7 @@ void render(double extrapolation_alpha) {
 	kinc_g4_begin(0);
 	kinc_g4_clear(KINC_G4_CLEAR_COLOR, 0, 0.0f, 0);
 	kinc_g4_end(0);
-	kinc_g4_swap_buffers(); //While vsynced this stalls this loop since swap buffers synchronizes the frame to the monitor. Keep that in mind.
+	//Note; do not call swap buffers in your own render function. Leave this to Kincinerate.
 }
 
 int kickstart(int argc, char** argv) {

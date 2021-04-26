@@ -29,6 +29,8 @@ static void burn_private_engine_gameloop(void) {
 		//!TODO: This isn't quite right. This should be the fixed DT which is adjusted? But it's just the time taken for logic + rendering
 		//!TODO: We still need it for the fixed update accumulator, however.
 		burn_internal_keys_time_update(burn_time_dt_adjusted()); 
+
+		//!TODO: Add frametime stuff here also
 	}
 
 	//Fixed Update 
@@ -48,6 +50,11 @@ static void burn_private_engine_gameloop(void) {
 	//Internal Kincinerate end frame
 	{
 		burn_perf_frames_update_framecount(&performance);
+	}
+
+	{
+		//Swap buffer here, hopefully wrapped in something more convenient
+		kinc_g4_swap_buffers();
 	}
 };
 
@@ -99,8 +106,8 @@ static kinc_window_options_t burn_private_engine_construct_window_options(burn_e
 
 	return wo;
 }
-
-static kinc_framebuffer_options_t burn_private_engine_construct_framebuffer_options(burn_engine_window_options_t *options) {
+																				/*This type is NOT an error; it's intentional*/
+static kinc_framebuffer_options_t burn_private_engine_construct_framebuffer_options(burn_engine_window_options_t *options) { 
 	kinc_framebuffer_options_t fbo;
 	//We don't care about a lot of the framebuffer settings atm.
 	kinc_internal_init_framebuffer_options(&fbo);
@@ -151,6 +158,7 @@ void burn_engine_ignition(burn_engine_window_options_t *window_options, burn_eng
 	kinc_init(wo.title, wo.width, wo.height, &wo, &fbo);
 
 	{
+		//Explicitly copy these by value just in case (noob c programmer is scared)
 		window_state = *window_options;
 		engine_state = *startup_options;
 		kinc_set_update_callback(&burn_private_engine_gameloop);
