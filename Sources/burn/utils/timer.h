@@ -7,7 +7,7 @@ typedef struct burn_timer {
 	double multiplier;
 } burn_timer_t;
 
-double burn_timer_init(burn_timer_t *timer);
+double burn_timer_init(burn_timer_t *timer, double current_time);
 
 double burn_timer_update(burn_timer_t *timer, double current_time);
 

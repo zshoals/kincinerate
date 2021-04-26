@@ -31,12 +31,12 @@ typedef struct burn_engine_window_options {
 } burn_engine_window_options_t;
 
 typedef struct burn_engine_startup_options {
-	double logic_fixed_update_rate; //We'll change this to ticks eventually
+	//!TODO: Change this to ticks eventually, only compute delta time as a double at the last moment
+	double logic_fixed_update_rate; 
 	void (*update_callback)(double delta_time);
 	void (*render_callback)(double extrapolation_alpha);
 } burn_engine_startup_options_t;
 
-//void burn_engine_ignition(void/* Needs like, framebuffer options, window options, update rate, update loop callback (takes dt), render loop callback (takes accum remainder)*/);
 void burn_engine_ignition(burn_engine_window_options_t *window_options, burn_engine_startup_options_t *startup_options);
 
 void burn_engine_window_options_init(burn_engine_window_options_t *options,

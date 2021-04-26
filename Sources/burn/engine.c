@@ -14,13 +14,13 @@
 #include "utils/time.h"
 #include "utils/timer.h"
 #include "math/random.h"
+#include "debug/performance.h"
 
 #define BURN_LOG_MODULE_NAME "Engine"
 
 static burn_engine_window_options_t window_state;
 static burn_engine_startup_options_t engine_state;
-static burn_timer_t logic_timer;
-static burn_timer_t render_timer;
+static burn_perf_tracker_t performance;
 
 static void burn_private_engine_gameloop(void) {
 	//Internal Kincinerate updates
@@ -33,16 +33,21 @@ static void burn_private_engine_gameloop(void) {
 
 	//Fixed Update 
 	{
-		burn_timer_update(&logic_timer, kinc_time());
+		burn_perf_time_update_logic(&performance, kinc_time());
 		engine_state.update_callback(engine_state.logic_fixed_update_rate);
-		burn_timer_update(&logic_timer, kinc_time());
+		burn_perf_time_update_logic(&performance, kinc_time());
 	}
 
 	//Render
 	{
-		burn_timer_update(&render_timer, kinc_time());
+		burn_perf_time_update_render(&performance, kinc_time());
 		engine_state.render_callback(0.0);
-		burn_timer_update(&render_timer, kinc_time());
+		burn_perf_time_update_render(&performance, kinc_time());
+	}
+
+	//Internal Kincinerate end frame
+	{
+		burn_perf_frames_update_framecount(&performance);
 	}
 };
 
@@ -54,8 +59,10 @@ static void burn_private_engine_initialize_keyboard(void) {
 
 static void burn_private_engine_initialize_time(void) {
 	burn_time_start(kinc_time());
-	burn_timer_init(&logic_timer);
-	burn_timer_init(&render_timer);
+}
+
+static void burn_private_engine_initialize_performance(void) {
+	burn_perf_init(&performance, kinc_time());
 }
 
 static void burn_private_engine_initialize_background_callbacks(void) {
@@ -111,6 +118,7 @@ void burn_engine_ignition(burn_engine_window_options_t *window_options, burn_eng
 		kinc_set_update_callback(&burn_private_engine_gameloop);
 		burn_private_engine_initialize_keyboard();
 		burn_private_engine_initialize_time();
+		burn_private_engine_initialize_performance();
 		burn_private_engine_initialize_background_callbacks();
 	}
 
