@@ -51,6 +51,8 @@ static void burn_private_engine_gameloop(void) {
 	}
 };
 
+#pragma region Engine Core Initialization Functions
+
 static void burn_private_engine_initialize_keyboard(void) {
 	burn_keys_start();
 	kinc_keyboard_key_down_callback = &burn_internal_keys_set_key_down;
@@ -69,6 +71,9 @@ static void burn_private_engine_initialize_background_callbacks(void) {
 	kinc_set_background_callback(&burn_internal_keys_set_all_up); //allow other people to hook into this?
 }
 
+#pragma endregion
+
+#pragma region Window/Framebuffer Option Tools
 static kinc_window_options_t burn_private_engine_construct_window_options(burn_engine_window_options_t *options) {
 	kinc_window_options_t wo;
 	wo.title = options->title;
@@ -105,26 +110,6 @@ static kinc_framebuffer_options_t burn_private_engine_construct_framebuffer_opti
 	return fbo;
 }
 
-void burn_engine_ignition(burn_engine_window_options_t *window_options, burn_engine_startup_options_t *startup_options) {
-	burn_log_info("Kincinerate initializing...");
-
-	kinc_window_options_t wo = burn_private_engine_construct_window_options(window_options);
-	kinc_framebuffer_options_t fbo = burn_private_engine_construct_framebuffer_options(window_options);
-	kinc_init(wo.title, wo.width, wo.height, &wo, &fbo);
-
-	{
-		window_state = *window_options;
-		engine_state = *startup_options;
-		kinc_set_update_callback(&burn_private_engine_gameloop);
-		burn_private_engine_initialize_keyboard();
-		burn_private_engine_initialize_time();
-		burn_private_engine_initialize_performance();
-		burn_private_engine_initialize_background_callbacks();
-	}
-
-	kinc_start();
-};
-
 void burn_engine_window_options_init(
 	burn_engine_window_options_t *options, 
 	const char *title, 
@@ -156,4 +141,25 @@ void burn_engine_startup_options_init(
 		options->update_callback = update_callback;
 		options->render_callback = render_callback;
 }
+#pragma endregion
+
+void burn_engine_ignition(burn_engine_window_options_t *window_options, burn_engine_startup_options_t *startup_options) {
+	burn_log_info("Kincinerate initializing...");
+
+	kinc_window_options_t wo = burn_private_engine_construct_window_options(window_options);
+	kinc_framebuffer_options_t fbo = burn_private_engine_construct_framebuffer_options(window_options);
+	kinc_init(wo.title, wo.width, wo.height, &wo, &fbo);
+
+	{
+		window_state = *window_options;
+		engine_state = *startup_options;
+		kinc_set_update_callback(&burn_private_engine_gameloop);
+		burn_private_engine_initialize_keyboard();
+		burn_private_engine_initialize_time();
+		burn_private_engine_initialize_performance();
+		burn_private_engine_initialize_background_callbacks();
+	}
+
+	kinc_start();
+};
 
