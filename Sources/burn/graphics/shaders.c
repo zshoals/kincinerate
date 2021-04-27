@@ -36,7 +36,7 @@ void burn_shaders_load_and_store_frag_shader(burn_shaders_storage_t *storage, co
 	strcpy(storage->fragment_shaders[storage->frag_active_slots].handle, new_handle);
 
 	storage->frag_active_slots++;
-	assert((storage->frag_active_slots < MAX_SHADERS) && "Too many vertex shaders added, raise the max or add less");
+	assert((storage->frag_active_slots < MAX_SHADERS) && "Too many fragment shaders added, raise the max or add less");
 };
 
 burn_shaders_vert_t *burn_shaders_find_vert_shader(burn_shaders_storage_t *storage, const char *handle) {
