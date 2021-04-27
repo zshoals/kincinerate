@@ -34,7 +34,7 @@ static void burn_private_engine_gameloop(void) {
 		//!TODO: Add frametime stuff here also
 	}
 
-	//Fixed Update 
+	//Fixed Update
 	{
 		burn_perf_time_update_logic(&performance, kinc_time());
 
@@ -59,6 +59,7 @@ static void burn_private_engine_gameloop(void) {
 	{
 		burn_perf_time_update_render(&performance, kinc_time());
 
+		//accum is the time since the most recent update
 		engine_state.render_callback(accumulator);
 
 		burn_perf_time_update_render(&performance, kinc_time());
