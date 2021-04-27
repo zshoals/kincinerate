@@ -32,11 +32,15 @@ typedef struct burn_engine_window_options {
 
 typedef struct burn_engine_startup_options {
 	//!TODO: Change this to ticks eventually, only compute delta time as a double at the last moment
-	double logic_fixed_update_rate; 
-	void (*update_callback)(double delta_time);
-	void (*render_callback)(double extrapolation_alpha);
+	double logic_fixed_update_rate;
+	double max_frametime;
+	void (*update_callback)(double dt);
+	void (*render_callback)(double alpha);
 } burn_engine_startup_options_t;
 
+/*
+	Framework entry point. Use this to start the fire.
+*/
 void burn_engine_ignition(burn_engine_window_options_t *window_options, burn_engine_startup_options_t *startup_options);
 
 void burn_engine_window_options_init(burn_engine_window_options_t *options,
@@ -48,6 +52,7 @@ void burn_engine_window_options_init(burn_engine_window_options_t *options,
 
 void burn_engine_startup_options_init(burn_engine_startup_options_t *options, 
 	double logic_fixed_update_rate,
+	double max_frametime,
 	void (*update_callback)(double delta_time),
 	void (*render_callback)(double extrapolation_alpha)
 );

@@ -22,28 +22,45 @@ static burn_engine_window_options_t window_state;
 static burn_engine_startup_options_t engine_state;
 static burn_perf_tracker_t performance;
 
+#pragma region Gameloop Variables
+static double accumulator = 0.0;
+#pragma endregion
+
 static void burn_private_engine_gameloop(void) {
 	//Internal Kincinerate updates
 	{
 		burn_internal_time_update(kinc_time());
-		//!TODO: This isn't quite right. This should be the fixed DT which is adjusted? But it's just the time taken for logic + rendering
-		//!TODO: We still need it for the fixed update accumulator, however.
 		burn_internal_keys_time_update(burn_time_dt_adjusted()); 
-
 		//!TODO: Add frametime stuff here also
 	}
 
 	//Fixed Update 
 	{
 		burn_perf_time_update_logic(&performance, kinc_time());
-		engine_state.update_callback(engine_state.logic_fixed_update_rate);
+
+		double fixed_step = engine_state.logic_fixed_update_rate;
+		double max_frametime = engine_state.max_frametime;
+
+		double frametime = burn_time_dt_adjusted();
+		if (frametime > max_frametime) {
+			frametime = max_frametime;
+		}
+		accumulator += frametime;
+
+		while (accumulator >= fixed_step) {
+			engine_state.update_callback(engine_state.logic_fixed_update_rate);
+			accumulator -= fixed_step;
+		}
+
 		burn_perf_time_update_logic(&performance, kinc_time());
 	}
 
 	//Render
 	{
 		burn_perf_time_update_render(&performance, kinc_time());
-		engine_state.render_callback(0.0);
+
+		engine_state.render_callback(accumulator);
+
 		burn_perf_time_update_render(&performance, kinc_time());
 	}
 
@@ -141,10 +158,12 @@ void burn_engine_window_options_init(
 void burn_engine_startup_options_init(
 	burn_engine_startup_options_t *options,
 	double logic_fixed_update_rate,
+	double max_frametime,
 	void (*update_callback)(double delta_time),
 	void (*render_callback)(double extrapolation_alpha)) {
 
 		options->logic_fixed_update_rate = logic_fixed_update_rate;
+		options->max_frametime = max_frametime;
 		options->update_callback = update_callback;
 		options->render_callback = render_callback;
 }
