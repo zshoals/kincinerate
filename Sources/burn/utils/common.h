@@ -24,7 +24,7 @@
 
 	Make sure that your struct contains "handle", a char array containing a unique identifier to strcmp against.
 */
-#define BURN_SEARCH_GENERIC_HANDLE_IN_STRUCT_ARRAY(type) \
+#define BURN_COMMON_CREATE_SEARCH_FUNCTION_FOR_GENERIC_HANDLE_IN_STRUCT_ARRAY(type) \
 static int burn_search_handle_in_struct_array_##type(type *storage, const char *const_handle, int scan_up_to, size_t size) {	\
 	for (int i = 0; i < (size) && i < (scan_up_to); ++i) {																		\
 		if (strcmp((const_handle), (storage[i].handle)) == 0) {																	\
