@@ -8,6 +8,10 @@
 
 #define BURN_LOG_MODULE_NAME "Shaders"
 
+BURN_SEARCH_GENERIC_HANDLE_IN_STRUCT_ARRAY(burn_shaders_frag_t);
+BURN_SEARCH_GENERIC_HANDLE_IN_STRUCT_ARRAY(burn_shaders_vert_t);
+BURN_SEARCH_GENERIC_HANDLE_IN_STRUCT_ARRAY(burn_shaders_pipeline_t);
+
 void burn_shaders_init(burn_shaders_storage_t *storage, size_t temp_memory_size) {
 	storage->frag_active_slots = 0;
 	storage->vert_active_slots = 0;
@@ -40,25 +44,21 @@ void burn_shaders_load_and_store_frag_shader(burn_shaders_storage_t *storage, co
 };
 
 burn_shaders_vert_t *burn_shaders_find_vert_shader(burn_shaders_storage_t *storage, const char *handle) {
-	int index;
-	BURN_SEARCH_HANDLE_IN_STRUCT_ARRAY(index, handle, storage->vert_active_slots, storage->vertex_shaders, MAX_SHADERS);
+	int index = burn_search_handle_in_struct_array_burn_shaders_vert_t(storage->vertex_shaders, handle, storage->vert_active_slots, MAX_SHADERS);
 	
 	assert((index != -1) && "Could not find any shader with the provided handle.");
 
 	return &storage->vertex_shaders[index];
 };
 burn_shaders_frag_t *burn_shaders_find_frag_shader(burn_shaders_storage_t *storage, const char *handle) {
-	int index;
-	BURN_SEARCH_HANDLE_IN_STRUCT_ARRAY(index, handle, storage->frag_active_slots, storage->fragment_shaders, MAX_SHADERS);
+	int index = burn_search_handle_in_struct_array_burn_shaders_frag_t(storage->fragment_shaders, handle, storage->frag_active_slots, MAX_SHADERS);
 
 	assert((index != -1) && "Could not find any shader with the provided handle.");
 
 	return &storage->fragment_shaders[index];
 };
 burn_shaders_pipeline_t *burn_shaders_find_pipeline(burn_shaders_storage_t *storage, const char *handle) {
-	int index;
-	BURN_SEARCH_HANDLE_IN_STRUCT_ARRAY(index, handle, storage->pipelines_active_slots, storage->pipelines, MAX_PIPELINES);
-
+	int index = burn_search_handle_in_struct_array_burn_shaders_pipeline_t(storage->pipelines, handle, storage->pipelines_active_slots, MAX_PIPELINES);
 	assert((index != -1) && "Could not find any pipeline with the provided handle.");
 
 	return &storage->pipelines[index];
