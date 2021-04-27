@@ -21,7 +21,6 @@ void burn_shaders_free_temp_storage(burn_shaders_storage_t *storage) {
 	storage->scratch_memory = NULL;
 };
 
-
 void burn_shaders_load_and_store_vert_shader(burn_shaders_storage_t *storage, const char *filename, const char *new_handle) {
 	size_t size = burn_io_simple_asset_read(filename, storage->scratch_memory);
 	kinc_g4_shader_init(storage->vertex_shaders[storage->vert_active_slots].shader, storage->scratch_memory, size, KINC_G4_SHADER_TYPE_VERTEX);
