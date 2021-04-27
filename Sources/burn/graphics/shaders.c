@@ -2,6 +2,9 @@
 #include "../utils/common.h"
 #include <stdlib.h>
 #include <assert.h>
+#include <kinc/io/filereader.h>
+#include <kinc/graphics4/shader.h>
+#include "../io/io.h"
 
 #define BURN_LOG_MODULE_NAME "Shaders"
 
@@ -10,16 +13,33 @@ void burn_shaders_init(burn_shaders_storage_t *storage, size_t temp_memory_size)
 	storage->vert_active_slots = 0;
 	storage->pipelines_active_slots = 0;
 
-	storage->memory_slab = malloc(temp_memory_size);
+	storage->scratch_memory = malloc(temp_memory_size);
 };
 //If you're done loading shaders, you don't need the storage anymore
 void burn_shaders_free_temp_storage(burn_shaders_storage_t *storage) {
-	free(storage->memory_slab);
-	storage->memory_slab = NULL;
+	free(storage->scratch_memory);
+	storage->scratch_memory = NULL;
 };
-//Bool for returning if the file failed to be loaded, in which case the process is aborted.
-bool burn_shaders_load_and_store_vert_shader(burn_shaders_storage_t *storage, const char *filename, const char *new_handle);
-bool burn_shaders_load_and_store_frag_shader(burn_shaders_storage_t *storage, const char *filename, const char *new_handle);
+
+
+void burn_shaders_load_and_store_vert_shader(burn_shaders_storage_t *storage, const char *filename, const char *new_handle) {
+	size_t size = burn_io_simple_asset_read(filename, storage->scratch_memory);
+	kinc_g4_shader_init(storage->vertex_shaders[storage->vert_active_slots].shader, storage->scratch_memory, size, KINC_G4_SHADER_TYPE_VERTEX);
+	strcpy(storage->vertex_shaders[storage->vert_active_slots].handle, new_handle);
+
+	storage->vert_active_slots++;
+	assert((storage->vert_active_slots < MAX_SHADERS) && "Too many vertex shaders added, raise the max or add less");
+};
+
+void burn_shaders_load_and_store_frag_shader(burn_shaders_storage_t *storage, const char *filename, const char *new_handle) {
+	size_t size = burn_io_simple_asset_read(filename, storage->scratch_memory);
+	kinc_g4_shader_init(storage->fragment_shaders[storage->frag_active_slots].shader, storage->scratch_memory, size, KINC_G4_SHADER_TYPE_FRAGMENT);
+	strcpy(storage->fragment_shaders[storage->frag_active_slots].handle, new_handle);
+
+	storage->frag_active_slots++;
+	assert((storage->frag_active_slots < MAX_SHADERS) && "Too many vertex shaders added, raise the max or add less");
+};
+
 burn_shaders_vert_t *burn_shaders_find_vert_shader(burn_shaders_storage_t *storage, const char *handle) {
 	int index;
 	BURN_SEARCH_HANDLE_IN_STRUCT_ARRAY(index, handle, storage->vert_active_slots, storage->vertex_shaders, MAX_SHADERS);

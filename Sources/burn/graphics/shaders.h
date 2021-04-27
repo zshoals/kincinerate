@@ -36,7 +36,7 @@ typedef struct burn_shaders_storage {
 	burn_shaders_pipeline_t pipelines[MAX_PIPELINES];
 	burn_shaders_frag_t fragment_shaders[MAX_SHADERS];
 	burn_shaders_vert_t vertex_shaders[MAX_SHADERS];
-	uint8_t *memory_slab;
+	uint8_t *scratch_memory;
 	uint8_t frag_active_slots;
 	uint8_t vert_active_slots;
 	uint8_t pipelines_active_slots;
@@ -51,8 +51,8 @@ void burn_shaders_init(burn_shaders_storage_t *storage, size_t temp_memory_size)
 */
 void burn_shaders_free_temp_storage(burn_shaders_storage_t *storage);
 //Bool for returning if the file failed to be loaded, in which case the process is aborted.
-bool burn_shaders_load_and_store_vert_shader(const char *filename, const char *new_handle);
-bool burn_shaders_load_and_store_frag_shader(const char *filename, const char *new_handle);
+void burn_shaders_load_and_store_vert_shader(const char *filename, const char *new_handle);
+void burn_shaders_load_and_store_frag_shader(const char *filename, const char *new_handle);
 burn_shaders_vert_t *burn_shaders_find_vert_shader(const char *handle);
 burn_shaders_frag_t *burn_shaders_find_frag_shader(const char *handle);
 burn_shaders_pipeline_t *burn_shaders_find_pipeline(const char *handle);
