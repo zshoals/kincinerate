@@ -8,6 +8,8 @@
 		"chrono": "c",
 		"limits": "c",
 		"xmemory": "c",
-		"xstring": "c"
+		"xstring": "c",
+		"iterator": "c",
+		"xutility": "c"
 	}
 }

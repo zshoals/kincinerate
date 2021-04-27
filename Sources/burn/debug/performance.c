@@ -13,7 +13,7 @@ void burn_perf_init(burn_perf_tracker_t *tracker, double current_time) {
 
 	tracker->framecount = 0;
 	
-	for (int i = 0; i < NUMELEMS(tracker->frametimes); ++i) {
+	for (int i = 0; i < BURN_NUMELEMS(tracker->frametimes); ++i) {
 		tracker->frametimes[i] = 0.0;
 	}
 };
