@@ -61,7 +61,7 @@ void burn_shaders_pipeline_set_vertex_shader(burn_shaders_pipeline_t *pipeline, 
 void burn_shaders_pipeline_set_fragment_shader(burn_shaders_pipeline_t *pipeline, burn_shaders_frag_t *shader);
 void burn_shaders_pipeline_set_blend_mode(burn_shaders_pipeline_t *pipeline, kinc_g4_blending_operation_t source, kinc_g4_blending_operation_t destination);
 void burn_shaders_pipeline_set_alpha_blend_mode(burn_shaders_pipeline_t *pipeline, kinc_g4_blending_operation_t source, kinc_g4_blending_operation_t destination);
-void burn_shaders_pipeline_compile_and_store(burn_shaders_pipeline_t *pipeline);
+void burn_shaders_pipeline_compile(burn_shaders_pipeline_t *pipeline);
 
 burn_shaders_vert_t *burn_shaders_find_vert_shader(const char *handle);
 burn_shaders_frag_t *burn_shaders_find_frag_shader(const char *handle);

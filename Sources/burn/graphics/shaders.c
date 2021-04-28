@@ -77,7 +77,6 @@ void burn_shaders_pipeline_set_alpha_blend_mode(burn_shaders_pipeline_t *pipelin
 };
 
 void burn_shaders_pipeline_compile(burn_shaders_storage_t *storage, burn_shaders_pipeline_t *pipeline) {
-
 	kinc_g4_pipeline_compile(&pipeline->pipeline);
 };
 
